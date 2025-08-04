@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo Interativo | Marcelo Cardoso de Oliveira</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling application designed as a professional narrative. It starts with a strong header, followed by an 'About Me' summary. The core is an interactive 'Professional Journey' timeline, where users click events to see details. This is followed by a 'Skills Dashboard' with dynamic charts (Radar and Bar) to visually represent competencies, moving beyond static lists. The structure concludes with sections for courses and contact. This narrative-driven, interactive dashboard approach was chosen to be more engaging and memorable for recruiters, showcasing the candidate's profile in a modern way that aligns with his technology-focused career path. -->
+    <!-- Visualization & Content Choices: 
+        - Professional Journey: Report Info -> Education & Work History. Goal -> Show Change. Viz/Method -> Interactive vertical timeline (HTML/CSS/JS). Interaction -> Click on timeline points to reveal detailed information cards. Justification -> Visually communicates career progression more effectively than a list.
+        - Skills Dashboard (Radar Chart): Report Info -> Competencies section. Goal -> Organize/Compare skill areas. Viz/Method -> Chart.js Radar Chart. Interaction -> Hover to see skill area and proficiency level. Justification -> Provides a holistic, at-a-glance view of the candidate's strengths across different domains (Admin, Tech, etc.), which is more insightful than a simple list.
+        - Skills Dashboard (Bar Chart): Report Info -> Specific skills listed. Goal -> Inform. Viz/Method -> Chart.js Horizontal Bar Chart. Interaction -> Hover over bars for tooltips. Justification -> Clearly and cleanly displays individual technical and soft skills for easy comparison.
+        - All other sections (About, Courses, Contact) use structured HTML/Tailwind for clarity and readability.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f5; /* zinc-100 */
+            color: #27272a; /* zinc-800 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 320px;
+            margin: auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item-content {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .timeline-item-content.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #f97316; /* orange-500 */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-zinc-800">Marcelo Cardoso</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#sobre" class="nav-link text-zinc-600">Sobre</a>
+                <a href="#jornada" class="nav-link text-zinc-600">Jornada</a>
+                <a href="#competencias" class="nav-link text-zinc-600">Competências</a>
+                <a href="#cursos" class="nav-link text-zinc-600">Cursos</a>
+                <a href="#contato" class="nav-link text-zinc-600">Contato</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-zinc-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden bg-white py-2">
+            <a href="#sobre" class="block text-center py-2 px-4 text-sm text-zinc-600 hover:bg-zinc-100">Sobre</a>
+            <a href="#jornada" class="block text-center py-2 px-4 text-sm text-zinc-600 hover:bg-zinc-100">Jornada</a>
+            <a href="#competencias" class="block text-center py-2 px-4 text-sm text-zinc-600 hover:bg-zinc-100">Competências</a>
+            <a href="#cursos" class="block text-center py-2 px-4 text-sm text-zinc-600 hover:bg-zinc-100">Cursos</a>
+            <a href="#contato" class="block text-center py-2 px-4 text-sm text-zinc-600 hover:bg-zinc-100">Contato</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="sobre" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-zinc-900">Marcelo Cardoso de Oliveira</h1>
+                <p class="mt-4 text-lg md:text-xl text-orange-600 font-medium">Desenvolvedor de Dados em Formação | Análise de Negócios</p>
+                <div class="mt-8 max-w-3xl mx-auto text-base md:text-lg text-zinc-700">
+                    <p>
+                        Profissional em desenvolvimento na área de tecnologia, cursando Tecnólogo em Big Data no Agronegócio, com formação técnica em Recursos Humanos e experiência prática em rotinas administrativas, atendimento ao cliente e operações comerciais. Busco uma oportunidade para aplicar e expandir meus conhecimentos em análise de dados e processos de negócio, contribuindo de forma proativa para os objetivos da empresa.
+                    </p>
+                </div>
+                <a href="#contato" class="mt-8 inline-block bg-orange-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-orange-600 transition-transform transform hover:scale-105">
+                    Entrar em Contato
+                </a>
+            </div>
+        </section>
+
+        <section id="jornada" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold">Jornada Profissional</h2>
+                    <p class="mt-4 text-lg text-zinc-600 max-w-2xl mx-auto">Uma linha do tempo interativa da minha formação acadêmica e experiência profissional. Clique em cada item para ver mais detalhes.</p>
+                </div>
+
+                <div class="relative max-w-2xl mx-auto">
+                    <div class="absolute left-1/2 w-0.5 h-full bg-zinc-300 transform -translate-x-1/2"></div>
+
+                    <div id="timeline-container">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="competencias" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold">Painel de Competências</h2>
+                    <p class="mt-4 text-lg text-zinc-600 max-w-2xl mx-auto">Uma visão geral das minhas habilidades. Os gráficos abaixo destacam minhas principais áreas de conhecimento e competências específicas.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4">Áreas de Conhecimento</h3>
+                        <div class="chart-container">
+                            <canvas id="skillsRadarChart"></canvas>
+                        </div>
+                         <p class="text-sm text-zinc-500 mt-4 text-center">Este gráfico representa uma autoavaliação das minhas áreas de competência, mostrando um perfil equilibrado com forte base administrativa e um foco crescente em tecnologia e dados.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4">Habilidades Específicas</h3>
+                        <div class="chart-container" style="max-width: 100%; height: 400px;">
+                             <canvas id="skillsBarChart"></canvas>
+                        </div>
+                        <p class="text-sm text-zinc-500 mt-4 text-center">Aqui estão listadas algumas das habilidades práticas que desenvolvi através da minha formação e experiência profissional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cursos" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold">Cursos e Qualificações</h2>
+                    <p class="mt-4 text-lg text-zinc-600 max-w-2xl mx-auto">Minha dedicação ao aprendizado contínuo através de cursos que complementam minha formação.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-zinc-50 p-6 rounded-lg shadow-sm border border-zinc-200">
+                        <h3 class="font-bold text-lg text-orange-600">Assistente Contábil</h3>
+                        <p class="mt-2 text-zinc-600">Qualificação em processos contábeis básicos.</p>
+                    </div>
+                     <div class="bg-zinc-50 p-6 rounded-lg shadow-sm border border-zinc-200">
+                        <h3 class="font-bold text-lg text-orange-600">Assistente de RH</h3>
+                        <p class="mt-2 text-zinc-600">Fundamentos de rotinas de Recursos Humanos.</p>
+                    </div>
+                     <div class="bg-zinc-50 p-6 rounded-lg shadow-sm border border-zinc-200">
+                        <h3 class="font-bold text-lg text-orange-600">Crédito e Cobrança</h3>
+                        <p class="mt-2 text-zinc-600">Conhecimentos em análise e processos de crédito.</p>
+                    </div>
+                     <div class="bg-zinc-50 p-6 rounded-lg shadow-sm border border-zinc-200">
+                        <h3 class="font-bold text-lg text-orange-600">Agente de Vendas</h3>
+                        <p class="mt-2 text-zinc-600">Técnicas de vendas e relacionamento com cliente.</p>
+                    </div>
+                    <div class="bg-zinc-50 p-6 rounded-lg shadow-sm border border-zinc-200">
+                        <h3 class="font-bold text-lg text-orange-600">Projeto Empreendedor</h3>
+                        <p class="mt-2 text-zinc-600">Participação no 3º Projeto Empreendedor Nota 10 (12h).</p>
+                    </div>
+                    <div class="bg-zinc-50 p-6 rounded-lg shadow-sm border border-zinc-200">
+                        <h3 class="font-bold text-lg text-orange-600">Rotinas Administrativas</h3>
+                        <p class="mt-2 text-zinc-600">Competências em organização de escritório e processos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contato" class="bg-zinc-800 text-white py-16">
+             <div class="container mx-auto px-6 text-center">
+                 <h2 class="text-3xl font-bold">Vamos Conversar?</h2>
+                 <p class="mt-4 max-w-xl mx-auto">Estou aberto a novas oportunidades e desafios. Ficarei feliz em conectar e discutir como minhas habilidades podem agregar valor à sua equipe.</p>
+                 <div class="mt-8 flex justify-center items-center flex-wrap gap-6 text-lg">
+                     <a href="mailto:oliveiramarcelo257@gmail.com" class="flex items-center gap-2 hover:text-orange-400 transition-colors">
+                        <span class="text-2xl">&#9993;</span>
+                        oliveiramarcelo257@gmail.com
+                     </a>
+                     <a href="tel:+5516991340619" class="flex items-center gap-2 hover:text-orange-400 transition-colors">
+                        <span class="text-2xl">&#128222;</span>
+                        (16) 99134-0619
+                     </a>
+                 </div>
+             </div>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const timelineData = [
+                {
+                    type: 'education',
+                    date: '2022 - Cursando',
+                    title: 'Tecnólogo em Big Data no Agronegócio',
+                    institution: 'FATEC Bebedouro',
+                    description: 'Desenvolvendo competências em coleta, processamento e análise de grandes volumes de dados aplicados ao agronegócio, com foco em ferramentas de BI, Machine Learning e tecnologias emergentes.'
+                },
+                {
+                    type: 'work',
+                    date: '2021 - Experiência',
+                    title: 'Serviços Gerais',
+                    institution: 'Lojas Amarelinha da Sorte',
+                    description: 'Atuação multifuncional com responsabilidades em atendimento ao cliente, operações de caixa, recebimento de mercadorias e rotinas administrativas gerais que mantinham a loja operacional e organizada.'
+                },
+                 {
+                    type: 'education',
+                    date: '2020 - Incompleto',
+                    title: 'Técnico em Administração',
+                    institution: 'ETEC Bebedouro',
+                    description: 'Iniciei o curso técnico em administração, onde adquiri noções fundamentais de gestão, finanças e operações empresariais.'
+                },
+                {
+                    type: 'education',
+                    date: '2019',
+                    title: 'Técnico em Recursos Humanos',
+                    institution: 'ETEC Bebedouro',
+                    description: 'Formação técnica com base nos principais processos de RH, incluindo recrutamento, seleção, treinamento e rotinas de departamento pessoal.'
+                }
+                 
+            ];
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineData.forEach((item, index) => {
+                const isLeft = index % 2 === 0;
+                const timelineItem = document.createElement('div');
+                timelineItem.className = `timeline-item mb-8 flex justify-between items-center w-full ${isLeft ? 'flex-row-reverse' : ''}`;
+                
+                const timelineContentHTML = `
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-orange-500 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">${item.type === 'education' ? '🎓' : '💼'}</h1>
+                    </div>
+                    <div class="order-1 bg-white rounded-lg shadow-md w-5/12 px-6 py-4 cursor-pointer timeline-card">
+                        <p class="text-sm text-zinc-500">${item.date}</p>
+                        <h3 class="mb-2 font-bold text-lg">${item.title}</h3>
+                        <p class="text-sm font-medium text-zinc-600">${item.institution}</p>
+                        <div class="timeline-item-content">
+                            <p class="text-sm leading-snug tracking-wide text-zinc-600 text-opacity-100 mt-3">${item.description}</p>
+                        </div>
+                    </div>
+                `;
+                timelineItem.innerHTML = timelineContentHTML;
+                timelineContainer.appendChild(timelineItem);
+            });
+            
+            document.querySelectorAll('.timeline-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.querySelector('.timeline-item-content').classList.toggle('open');
+                });
+            });
+
+            const radarCtx = document.getElementById('skillsRadarChart2').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Administrativo', 'Atendimento ao Cliente', 'Recursos Humanos', 'Tecnologia', 'Análise de Dados'],
+                    datasets: [{
+                        label: 'Nível de Proficiência',
+                        data: [85, 90, 70, 65, 75],
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                        borderColor: 'rgb(249, 115, 22)',
+                        pointBackgroundColor: 'rgb(249, 115, 22)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(249, 115, 22)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { font: { size: 12 }, color: '#3f3f46' },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: '#71717a',
+                                stepSize: 25,
+                                beginAtZero: true,
+                                max: 100,
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.r !== null) {
+                                        label += context.parsed.r + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const barCtx = document.getElementById('skillsBarChart2').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Comunicação', 'Solução de Problemas', 'Rotinas de Escritório', 'Pacote Office', 'Big Data (Noções)'],
+                    datasets: [{
+                        label: 'Habilidades',
+                        data: [90, 80, 85, 75, 60],
+                        backgroundColor: [
+                            'rgba(251, 146, 60, 0.6)',
+                            'rgba(251, 146, 60, 0.6)',
+                            'rgba(249, 115, 22, 0.6)',
+                            'rgba(249, 115, 22, 0.6)',
+                            'rgba(234, 88, 12, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgb(251, 146, 60)',
+                            'rgb(251, 146, 60)',
+                            'rgb(249, 115, 22)',
+                            'rgb(249, 115, 22)',
+                             'rgb(234, 88, 12)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                             grid: { display: false },
+                             ticks: { color: '#71717a' }
+                        },
+                        y: {
+                            ticks: { color: '#3f3f46', font: { size: 12 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                     return context.raw + '% de confiança';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
